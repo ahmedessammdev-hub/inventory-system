@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout title="Register">
     <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
         <p class="text-gray-600">Join us and start managing your inventory</p>

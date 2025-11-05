@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Profile')
+
 @section('content')
 <div class="py-10">
     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">

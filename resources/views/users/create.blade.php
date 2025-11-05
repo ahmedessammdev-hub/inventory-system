@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Add User')
+
 @section('content')
 <div class="py-12">
     <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
