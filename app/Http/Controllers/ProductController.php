@@ -123,10 +123,10 @@ class ProductController extends Controller
             'category' => 'nullable|string',
             'cost' => 'required|numeric|min:0',
             'price' => 'required|numeric|min:0',
-            'quantity' => 'required|integer|min:0',
             'supplier_id' => 'required|exists:suppliers,id',
         ]);
 
+        // Note: Quantity is not updatable here - it must be changed through Stock Transactions
         $product->update($validated);
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');

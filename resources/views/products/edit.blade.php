@@ -75,20 +75,32 @@
                             prefix="$"
                             :required="true" />
 
-                        <!-- Quantity Field -->
-                        <x-form-input
-                            label="Current Quantity"
-                            name="quantity"
-                            type="number"
-                            :value="old('quantity', $product->quantity)"
-                            placeholder="0"
-                            :required="true">
-                            <x-slot name="icon">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                        <!-- Quantity Field (Read-only) -->
+                        <div class="relative">
+                            <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">
+                                Current Quantity
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                    </svg>
+                                </div>
+                                <input
+                                    type="number"
+                                    id="quantity"
+                                    value="{{ $product->quantity }}"
+                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-600 cursor-not-allowed"
+                                    disabled
+                                    readonly>
+                            </div>
+                            <p class="mt-1 text-sm text-blue-600">
+                                <svg class="inline-block h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                                 </svg>
-                            </x-slot>
-                        </x-form-input>
+                                Quantity can only be changed through Stock Transactions
+                            </p>
+                        </div>
 
                         <!-- Supplier Field -->
                         <x-form-select
