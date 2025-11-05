@@ -20,36 +20,44 @@ class UserSeeder extends Seeder
         User::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // Create 2 Admin Users
-        User::create([
-            'name' => 'Ahmed Admin',
-            'email' => 'ahmed.admin@brandology.com',
-            'password' => Hash::make('123456'),
-            'role' => 'admin',
-        ]);
+        // Create Admin Users
+        $admins = [
+            ['name' => 'Ahmed Essam', 'email' => 'ahmed.admin@inventory.com'],
+            ['name' => 'Sara Mohamed', 'email' => 'sara.admin@inventory.com'],
+            ['name' => 'Karim Hassan', 'email' => 'karim.admin@inventory.com'],
+        ];
 
-        User::create([
-            'name' => 'Sara Admin',
-            'email' => 'sara.admin@brandology.com',
-            'password' => Hash::make('123456'),
-            'role' => 'admin',
-        ]);
+        foreach ($admins as $admin) {
+            User::create([
+                'name' => $admin['name'],
+                'email' => $admin['email'],
+                'password' => Hash::make('123456'),
+                'role' => 'admin',
+            ]);
+        }
 
-        // Create 2 Warehouse Managers
-        User::create([
-            'name' => 'Omar Manager',
-            'email' => 'omar.manager@brandology.com',
-            'password' => Hash::make('123456'),
-            'role' => 'warehouse_manager',
-        ]);
+        // Create Warehouse Managers
+        $managers = [
+            ['name' => 'Omar Khalil', 'email' => 'omar.manager@inventory.com'],
+            ['name' => 'Lina Ahmed', 'email' => 'lina.manager@inventory.com'],
+            ['name' => 'Youssef Ali', 'email' => 'youssef.manager@inventory.com'],
+            ['name' => 'Mona Samir', 'email' => 'mona.manager@inventory.com'],
+            ['name' => 'Hossam Ibrahim', 'email' => 'hossam.manager@inventory.com'],
+            ['name' => 'Nour Mahmoud', 'email' => 'nour.manager@inventory.com'],
+            ['name' => 'Tarek Fahmy', 'email' => 'tarek.manager@inventory.com'],
+            ['name' => 'Dina Farouk', 'email' => 'dina.manager@inventory.com'],
+        ];
 
-        User::create([
-            'name' => 'Lina Manager',
-            'email' => 'lina.manager@brandology.com',
-            'password' => Hash::make('123456'),
-            'role' => 'warehouse_manager',
-        ]);
+        foreach ($managers as $manager) {
+            User::create([
+                'name' => $manager['name'],
+                'email' => $manager['email'],
+                'password' => Hash::make('123456'),
+                'role' => 'warehouse_manager',
+            ]);
+        }
 
-        $this->command->info('✓ Created 4 users (2 admins, 2 warehouse managers)');
+        $totalUsers = count($admins) + count($managers);
+        $this->command->info("✓ Created {$totalUsers} users (" . count($admins) . " admins, " . count($managers) . " warehouse managers)");
     }
 }

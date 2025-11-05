@@ -37,15 +37,19 @@ class DatabaseSeeder extends Seeder
         $this->command->newLine();
 
         // Display login credentials
-        $this->command->info('📋 Login Credentials:');
+        $this->command->info('📋 Sample Login Credentials:');
         $this->command->line('');
         $this->command->line('Admin Users:');
-        $this->command->line('  • ahmed.admin@brandology.com / 123456');
-        $this->command->line('  • sara.admin@brandology.com / 123456');
+        $this->command->line('  • ahmed.admin@inventory.com / 123456');
+        $this->command->line('  • sara.admin@inventory.com / 123456');
+        $this->command->line('  • karim.admin@inventory.com / 123456');
         $this->command->line('');
         $this->command->line('Warehouse Managers:');
-        $this->command->line('  • omar.manager@brandology.com / 123456');
-        $this->command->line('  • lina.manager@brandology.com / 123456');
+        $this->command->line('  • omar.manager@inventory.com / 123456');
+        $this->command->line('  • lina.manager@inventory.com / 123456');
+        $this->command->line('  • (+ 6 more managers available)');
+        $this->command->newLine();
+        $this->command->info('💡 All passwords are: 123456');
         $this->command->newLine();
     }
 }

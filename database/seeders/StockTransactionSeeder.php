@@ -55,41 +55,69 @@ class StockTransactionSeeder extends Seeder
         ];
 
         $transactionCount = 0;
+        $daysBack = 90; // Create transactions for the last 3 months
 
         foreach ($products as $product) {
-            // Create 3-5 transactions per product
-            $numTransactions = rand(3, 5);
+            // Create 5-12 transactions per product for more realistic history
+            $numTransactions = rand(5, 12);
+
+            // Reset product quantity to track from zero
+            $currentQuantity = 0;
 
             for ($i = 0; $i < $numTransactions; $i++) {
-                $type = rand(0, 10) > 3 ? 'in' : 'out'; // 70% in, 30% out
-                $quantity = rand(5, 20);
-
-                // Make sure we don't go negative
-                if ($type === 'out' && $quantity > $product->quantity) {
-                    $quantity = max(1, floor($product->quantity / 2));
+                // First few transactions are usually stock IN
+                if ($i < 2) {
+                    $type = 'in';
+                } else {
+                    // 60% in, 40% out for realistic inventory movement
+                    $type = rand(0, 10) > 4 ? 'in' : 'out';
                 }
 
-                $transaction = StockTransaction::create([
+                // Vary quantity based on transaction type
+                if ($type === 'in') {
+                    $quantity = rand(10, 50); // Larger batches for incoming stock
+                } else {
+                    $quantity = rand(2, 15); // Smaller amounts for outgoing
+                }
+
+                // Make sure we don't go negative
+                if ($type === 'out' && $quantity > $currentQuantity) {
+                    if ($currentQuantity > 0) {
+                        $quantity = rand(1, max(1, floor($currentQuantity / 2)));
+                    } else {
+                        continue; // Skip this transaction if no stock
+                    }
+                }
+
+                // Create transaction with varied dates over the past 90 days
+                $daysAgo = $daysBack - ($i * ($daysBack / $numTransactions));
+                $createdAt = now()->subDays((int)$daysAgo)->subHours(rand(8, 18))->subMinutes(rand(0, 59));
+
+                StockTransaction::create([
                     'product_id' => $product->id,
                     'type' => $type,
                     'quantity' => $quantity,
                     'reason' => $reasons[$type][array_rand($reasons[$type])],
                     'user_id' => $users->random()->id,
-                    'created_at' => now()->subDays(rand(0, 30))->subHours(rand(0, 23)),
+                    'created_at' => $createdAt,
+                    'updated_at' => $createdAt,
                 ]);
 
-                // Update product quantity to reflect transaction
+                // Update current quantity tracking
                 if ($type === 'in') {
-                    $product->quantity += $quantity;
+                    $currentQuantity += $quantity;
                 } else {
-                    $product->quantity -= $quantity;
+                    $currentQuantity -= $quantity;
                 }
-                $product->save();
 
                 $transactionCount++;
             }
+
+            // Update product with final quantity
+            $product->quantity = $currentQuantity;
+            $product->save();
         }
 
-        $this->command->info('✓ Created ' . $transactionCount . ' stock transactions for ' . $products->count() . ' products');
+        $this->command->info('✓ Created ' . $transactionCount . ' stock transactions for ' . $products->count() . ' products over the last ' . $daysBack . ' days');
     }
 }
