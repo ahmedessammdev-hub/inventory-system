@@ -1,6 +1,13 @@
 @props(['transaction'])
 
 <tr class="hover:bg-gray-50 transition duration-150">
+    <!-- Transaction ID -->
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm font-mono text-gray-900">
+            #{{ $transaction->id }}
+        </div>
+    </td>
+
     <!-- Product -->
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center">
