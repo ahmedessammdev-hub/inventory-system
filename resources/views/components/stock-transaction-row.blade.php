@@ -4,13 +4,22 @@
     <!-- Product -->
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center">
-            <div class="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-                <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex-shrink-0 h-10 w-10 {{ $transaction->product->trashed() ? 'bg-gray-100' : 'bg-indigo-100' }} rounded-lg flex items-center justify-center">
+                <svg class="h-6 w-6 {{ $transaction->product->trashed() ? 'text-gray-400' : 'text-indigo-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                 </svg>
             </div>
             <div class="ml-4">
-                <div class="text-sm font-medium text-gray-900">{{ $transaction->product->name }}</div>
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-medium {{ $transaction->product->trashed() ? 'text-gray-500 line-through' : 'text-gray-900' }}">
+                        {{ $transaction->product->name }}
+                    </span>
+                    @if($transaction->product->trashed())
+                        <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                            Deleted
+                        </span>
+                    @endif
+                </div>
                 <div class="text-sm text-gray-500">SKU: {{ $transaction->product->sku }}</div>
             </div>
         </div>

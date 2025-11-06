@@ -21,7 +21,8 @@ class StockTransactionController extends Controller
             $query->where(function($q) use ($searchTerm) {
                 $q->where('reason', 'like', "%{$searchTerm}%")
                   ->orWhereHas('product', function($productQuery) use ($searchTerm) {
-                      $productQuery->where('name', 'like', "%{$searchTerm}%")
+                      $productQuery->withTrashed() // Include soft deleted products in search
+                                   ->where('name', 'like', "%{$searchTerm}%")
                                    ->orWhere('sku', 'like', "%{$searchTerm}%");
                   })
                   ->orWhereHas('user', function($userQuery) use ($searchTerm) {
@@ -74,8 +75,8 @@ class StockTransactionController extends Controller
         $totalStockOut = StockTransaction::where('type', 'out')->sum('quantity');
         $recentTransactions = StockTransaction::where('created_at', '>=', now()->subDays(7))->count();
 
-        // Load dropdown options for filters
-        $products = Product::orderBy('name')->get();
+        // Load dropdown options for filters (include soft deleted products)
+        $products = Product::withTrashed()->orderBy('name')->get();
         $users = \App\Models\User::orderBy('name')->get();
 
         return view('stock.index', compact(
@@ -96,7 +97,8 @@ class StockTransactionController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        // Only show active (non-deleted) products for new transactions
+        $products = Product::orderBy('name')->get();
         return view('stock.create', compact('products'));
     }
 

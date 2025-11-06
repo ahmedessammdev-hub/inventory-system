@@ -58,8 +58,10 @@
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         <option value="">All Products 📦</option>
                         @foreach($products as $product)
-                            <option value="{{ $product->id }}" {{ request('product_filter') == $product->id ? 'selected' : '' }}>
-                                {{ $product->name }} ({{ $product->sku }})
+                            <option value="{{ $product->id }}"
+                                    {{ request('product_filter') == $product->id ? 'selected' : '' }}
+                                    @if($product->trashed()) style="color: #9ca3af; font-style: italic;" @endif>
+                                {{ $product->name }} ({{ $product->sku }}){{ $product->trashed() ? ' - Deleted' : '' }}
                             </option>
                         @endforeach
                     </select>
