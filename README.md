@@ -11,18 +11,22 @@ A modern, enterprise-grade inventory management system built with Laravel 12, fe
 
 ### 📦 Product Management
 - Complete CRUD operations with advanced filtering and search
-- Product categories: Electronics, Clothing, Food, Furniture, and more
-- SKU management and cost/price tracking
+- **Soft Delete System** - Deleted products preserved for transaction history integrity
+- 11 product categories: Laptops, Monitors, Printers, Storage, Networking, Audio/Video, Cables, Power/UPS, Furniture, Accessories
+- SKU management with unique validation and cost/price tracking
 - Low stock alerts and out-of-stock indicators
 - Detailed product pages with full transaction history
-- Stock level visualization with Chart.js integration
+- Stock level visualization and analytics
+- Realistic pricing in Egyptian Pounds (EGP)
 
 ### 🏢 Supplier Management
-- Comprehensive supplier database with contact information
+- 15 pre-loaded realistic Egyptian suppliers with complete contact information
+- Comprehensive supplier database with email, phone, and physical addresses
 - Supplier-product relationship tracking
 - Cascade deletion protection (products remain when supplier deleted)
 - Advanced filtering and search capabilities
 - Beautiful gradient-based UI components
+- Statistics dashboard for supplier analytics
 
 ### 📊 Advanced Stock Transaction Management
 - Real-time inventory tracking with in/out transactions
@@ -32,6 +36,7 @@ A modern, enterprise-grade inventory management system built with Laravel 12, fe
 - Transaction filtering by type, product, user, and date range
 - Automatic quantity calculations
 - User tracking for all stock movements
+- **Soft Delete Protection** - Products use soft deletes to preserve transaction history
 
 ### � Role-Based Access Control
 - **Admin** - Full system access, user management, and configuration
@@ -116,26 +121,24 @@ Visit `http://localhost:8000` to access the application.
 
 ## 🔐 Default Credentials
 
-The system comes pre-seeded with demo accounts for testing:
+The system comes pre-seeded with realistic demo accounts for testing:
 
-### Admin Account
+### Admin Accounts
 
-- **Email:** `admin@example.com`
-- **Password:** `password`
+- **Email:** `ahmed.admin@inventory.com` / **Password:** `123456`
+- **Email:** `sara.admin@inventory.com` / **Password:** `123456`
+- **Email:** `karim.admin@inventory.com` / **Password:** `123456`
 - **Role:** Administrator
 - **Permissions:** Full system access including user management
 
-### Warehouse Manager Account
+### Warehouse Manager Accounts
 
-- **Email:** `manager@example.com`
-- **Password:** `password`
+- **Email:** `omar.manager@inventory.com` / **Password:** `123456`
+- **Email:** `lina.manager@inventory.com` / **Password:** `123456`
+- **Email:** `youssef.manager@inventory.com` / **Password:** `123456`
+- Plus 5 more warehouse managers available
 - **Role:** Warehouse Manager
 - **Permissions:** Inventory operations and reporting
-
-### Additional Test Users
-
-- **Email:** `user1@example.com` / **Password:** `password`
-- **Email:** `user2@example.com` / **Password:** `password`
 
 > ⚠️ **Security Notice:** Change these default passwords immediately after first login in production environments! Public registration is disabled - only admins can create new users.
 
@@ -268,7 +271,7 @@ php artisan test               # Run tests
 - **Primary:** MySQL 8.0
 - **Alternative Support:** SQLite, PostgreSQL
 - **Migrations:** Version-controlled schema
-- **Seeders:** Sample data for testing (4 users, 6 suppliers, 12 products, 44 transactions)
+- **Seeders:** Realistic sample data (11 users, 15 suppliers, 122 products, 1,007 transactions over 90 days)
 
 ### Development Tools
 
@@ -322,7 +325,7 @@ php artisan test --coverage
 ### Main Tables
 
 - **users** - System users with role-based access
-- **products** - Product inventory with categories and pricing
+- **products** - Product inventory with categories, pricing, and soft deletes (`deleted_at`)
 - **suppliers** - Supplier information and contacts
 - **stock_transactions** - Complete history of stock movements
 - **cache** - Application caching
@@ -401,6 +404,13 @@ The system follows the MVC pattern with specialized controllers for each domain.
 - Non-negative costs and prices
 - Positive or zero quantity
 - Required supplier relationship
+
+**Soft Delete Features:**
+- Products marked as deleted retain `deleted_at` timestamp
+- Transaction history preserved when product is deleted
+- Deleted products excluded from default queries
+- Can be restored or permanently deleted via `forceDelete()`
+- Prevents data loss and maintains audit trail integrity
 
 ---
 
@@ -692,13 +702,62 @@ For support, questions, or feature requests:
 
 ---
 
-## 👨‍💻 Developer
+## � Recent Updates
+
+### Version 2.0 (November 2025)
+
+**Major Features:**
+- ✅ **Soft Delete System** - Products now use soft deletes to preserve transaction history
+- ✅ **Enhanced Seed Data** - 122 realistic products across 11 categories with 1,007 transactions
+- ✅ **Dynamic Page Titles** - Each page now has a unique, descriptive browser title
+- ✅ **Quantity Lock on Edit** - Product quantities can only be changed through Stock Transactions
+- ✅ **Realistic Data** - Egyptian-focused suppliers, pricing in EGP, and 90-day transaction history
+
+**Data Improvements:**
+- 11 diverse product categories (Laptops, Monitors, Storage, Networking, etc.)
+- 15 Egyptian suppliers with realistic contact information
+- 11 user accounts (3 admins + 8 warehouse managers)
+- Transaction history spanning 3 months with realistic patterns
+
+**Technical Enhancements:**
+- Added `deleted_at` column to products table via migration
+- Implemented SoftDeletes trait in Product model
+- Enhanced seeder files with comprehensive, realistic data
+- Improved validation and business logic across controllers
+
+### Migration Notes
+
+If updating from an earlier version:
+
+```bash
+# Run new migrations
+php artisan migrate
+
+# Optionally refresh with new seed data
+php artisan migrate:fresh --seed
+```
+
+---
+
+## 📚 Additional Documentation
+
+For detailed information about the seed data, see [`SEED_DATA_INFO.md`](SEED_DATA_INFO.md) which includes:
+- Complete list of all 11 users with credentials
+- 15 supplier details with contact information
+- 122 products categorized by type
+- Transaction patterns and statistics
+- Testing scenarios and use cases
+
+---
+
+## �👨‍💻 Developer
 
 **Ahmed Essam**
 
 - 📧 Email: ahmed.essam.dev@gmail.com
 - 💼 Full Stack Developer
+- 🌐 GitHub: [@ahmedessammdev-hub](https://github.com/ahmedessammdev-hub)
 
 ---
 
-Made with ❤️ using Laravel & Tailwind CSS
+Made with ❤️ using Laravel & Tailwind CSS | Updated November 2025
